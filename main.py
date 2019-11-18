@@ -8,6 +8,7 @@ from PIL import ImageChops
 from PIL import Image
 import sys
 import datetime
+
 fishingStatus = 'stop'  # started | ending
 fishingVershiStatus = 'empty' # 'load' 
 fishingVershiLoadingTime = datetime.datetime.now()
@@ -17,27 +18,7 @@ def my_print(text):
     sys.stdout.write(str('\n'))
     sys.stdout.flush()
 
-
 lastBuff = datetime.datetime.now()
-
-sourceRect = Image.open("source.png")
-
-
-def compare(image1, image2):
-
-    h1 = image1.histogram()
-    h2 = image2.histogram()
-    rms = math.sqrt(reduce(operator.add,
-                           map(lambda a, b: (a-b)**2, h1, h2))/len(h1))
-    return rms
-
-
-def average(lst):
-    return sum(lst) / len(lst)
-
-
-diffArr = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-
 
 def startFishing(red):
     global lastBuff, fishingStatus, diffArr, fishingVershiStatus, fishingVershiLoadingTime
@@ -86,7 +67,6 @@ def startFishing(red):
 time.sleep(5)
 pyautogui.press('g')
 time.sleep(5)
-
 
 while True:
     imgRect = pyautogui.screenshot(region=(635, 367, 651 - 635, 387 - 367))
