@@ -36,9 +36,9 @@ def startFishing(red):
     
     if vershiDelda.seconds > 320 and fishingStatus == 'stop':
         fishingVershiLoadingTime = datetime.datetime.now()
-        ser.write('R_G\n'.encode('utf-8'))
+        ser.write('G\n'.encode('utf-8'))
         time.sleep(11)
-        ser.write('R_G\n'.encode('utf-8'))
+        ser.write('G\n'.encode('utf-8'))
         time.sleep(5)
 
     if fishingStatus == 'stop':
@@ -46,22 +46,22 @@ def startFishing(red):
         # time to buff
         if buffDelta.seconds > 240:
             lastBuff = datetime.datetime.now()
-            ser.write('R_S\n'.encode('utf-8'))
+            ser.write('S\n'.encode('utf-8'))
             time.sleep(4)
         fishingStatus = 'started'
-        ser.write('R_W\n'.encode('utf-8'))
+        ser.write('W\n'.encode('utf-8'))
         time.sleep(5)
     elif fishingStatus == 'started' and red < 85:
         my_print('ending')
         fishingStatus = 'ending'
-        ser.write('R_W\n'.encode('utf-8'))
+        ser.write('W\n'.encode('utf-8'))
         time.sleep(7)
     if fishingStatus == 'ending':
         my_print('stop')
         fishingStatus = 'stop'
 
 time.sleep(5)
-ser.write('R_G\n'.encode('utf-8'))
+ser.write('G\n'.encode('utf-8'))
 time.sleep(5)
 
 while True:
