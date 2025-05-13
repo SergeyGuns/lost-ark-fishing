@@ -1,17 +1,13 @@
 import pyautogui
 import time
-import math
-import operator
-from functools import reduce
-from PIL import Image
-from PIL import ImageChops
-from PIL import Image
 import sys
 import datetime
+import serial
 
 fishingStatus = 'stop'  # started | ending
 fishingVershiStatus = 'empty' # 'load' 
 fishingVershiLoadingTime = datetime.datetime.now()
+ser = serial.Serial('COM3', baudrate=9600, timeout=1)
 
 def my_print(text):
     sys.stdout.write(str(text))
@@ -40,9 +36,9 @@ def startFishing(red):
     
     if vershiDelda.seconds > 320 and fishingStatus == 'stop':
         fishingVershiLoadingTime = datetime.datetime.now()
-        pyautogui.press('g')
+        ser.write('R_g'.encode('utf-8'))
         time.sleep(11)
-        pyautogui.press('g')
+        ser.write('R_g'.encode('utf-8'))
         time.sleep(5)
 
     if fishingStatus == 'stop':
@@ -50,22 +46,22 @@ def startFishing(red):
         # time to buff
         if buffDelta.seconds > 240:
             lastBuff = datetime.datetime.now()
-            pyautogui.press('s')
+            ser.write('R_s'.encode('utf-8'))
             time.sleep(4)
         fishingStatus = 'started'
-        pyautogui.press('w')
+        ser.write('R_w'.encode('utf-8'))
         time.sleep(5)
     elif fishingStatus == 'started' and red < 85:
         my_print('ending')
         fishingStatus = 'ending'
-        pyautogui.press('w')
+        ser.write('R_w'.encode('utf-8'))
         time.sleep(7)
     if fishingStatus == 'ending':
         my_print('stop')
         fishingStatus = 'stop'
 
 time.sleep(5)
-pyautogui.press('g')
+ser.write('R_g'.encode('utf-8'))
 time.sleep(5)
 
 while True:
